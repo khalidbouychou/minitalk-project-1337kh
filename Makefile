@@ -5,31 +5,48 @@
 #                                                     +:+ +:+         +:+      #
 #    By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/11/07 16:48:04 by khbouych          #+#    #+#              #
-#    Updated: 2022/12/18 12:09:04 by khbouych         ###   ########.fr        #
+#    Created: 2022/12/18 18:21:23 by khbouych          #+#    #+#              #
+#    Updated: 2022/12/18 18:24:21 by khbouych         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libftprintf.a
-CC = cc
-CFLAGS = -Wall -Werror -Wextra
-AR = ar -rc
-RM = rm -f
-FILES = ft_printf.c ft_putchar.c ft_print_str.c ft_print_number.c  ft_print_hex_upper.c  ft_print_hex_lower.c  ft_print_adr_memory.c  ft_print_unsigned_format.c ft_strlen.c ft_atoi.c
-OBJ = $(FILES:.c=.o)
+CC    = gcc
+FLAGS    = -Wall -Wextra -Werror
 
-$(NAME): $(OBJ)
-	@$(AR) $(NAME) $(OBJ)
+SRV    = server
+CLI    = client
 
-all: $(NAME)
+SRV_C = $(SRV:=.c)
+CLI_C = $(CLI:=.c)
 
-%.o: %.c ft_printf.h
-	$(CC) $(CFLAGS) -c $< -o $@
+SRV_O    = $(SRV:=.o)
+CLI_O = $(CLI:=.o)
+
+LIB = ft_printf/libftprintf.a
+LIBDIR    = ft_printf
+
+HEADER = minitalk.h
+
+all: $(LIB) $(SRV) $(CLI)
+
+$(SRV): $(SRV_O) $(HEADER)
+	@ $(CC) $(FLAGS) -I $(HEADER) $(LIB) $(SRV_O) -o $@
+
+$(CLI): $(CLI_O) $(HEADER)
+	@ $(CC) $(FLAGS) -I $(HEADER) $(LIB) $(CLI_O) -o $@
+
+%.o: %.c
+	@ $(CC) $(FLAGS) -c $< -o $@
+
+$(LIB):
+	@ $(MAKE) -C $(LIBDIR)
 
 clean:
-	@$(RM) $(OBJ)
+	@ $(MAKE) clean -C $(LIBDIR)
+	@ rm -rf $(SRV_O) $(CLI_O)
 
 fclean: clean
-	@$(RM) $(NAME)
+	@ $(MAKE) fclean -C $(LIBDIR)
+	@ rm -rf $(SRV) $(CLI)
 
 re: fclean all
