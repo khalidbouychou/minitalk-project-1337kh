@@ -6,25 +6,23 @@
 /*   By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 15:02:43 by khbouych          #+#    #+#             */
-/*   Updated: 2022/12/22 20:19:08 by khbouych         ###   ########.fr       */
+/*   Updated: 2022/12/26 14:35:16 by khbouych         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	ft_signal_handler(int signal_received, siginfo_t *info_signal )
+void	ft_signal_handler(int signal_received, siginfo_t *info_signal)
 {
 	static char	c;
 	static int	bits;
 	static int	current_pid;
-	int			new_pid;
 
 	if (!current_pid)
 		current_pid = info_signal->si_pid;
-	new_pid = info_signal->si_pid;
-	if (new_pid != current_pid)
+	if (info_signal->si_pid != current_pid)
 	{
-		current_pid = new_pid;
+		current_pid = info_signal->si_pid;
 		c = 0;
 		bits = 0;
 	}
@@ -32,7 +30,7 @@ void	ft_signal_handler(int signal_received, siginfo_t *info_signal )
 	bits++;
 	if (bits == 8)
 	{
-		ft_printf("%c", c); 
+		ft_printf("%c", c);
 		c = 0;
 		bits = 0;
 	}
@@ -43,12 +41,10 @@ void	ft_signal_handler(int signal_received, siginfo_t *info_signal )
 
 int	main(void)
 {
-	struct sigaction action;
-	
-	action.sa_sigaction =(void *)ft_signal_handler;
-	//action.sa_flags = SA_SIGINFO;
+	struct sigaction	action;
 
-	// signal(SIGTSTP,&ft_signal_handler);
+	action.sa_sigaction = (void *)ft_signal_handler;
+
 	ft_printf(" *** This My PID  ==>[ %d ] *** \n", getpid());
 	while (1)
 	{
