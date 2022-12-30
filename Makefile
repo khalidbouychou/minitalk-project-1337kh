@@ -5,55 +5,49 @@
 #                                                     +:+ +:+         +:+      #
 #    By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/12/18 18:21:23 by khbouych          #+#    #+#              #
-#    Updated: 2022/12/26 14:28:37 by khbouych         ###   ########.fr        #
+#    Created: 2022/11/07 16:48:04 by khbouych          #+#    #+#              #
+#    Updated: 2022/12/30 21:01:43 by khbouych         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS    = -Wall -Wextra -Werror
+CC = cc
 
-SRV    = server
-CLI    = client
-B_CLI = client_bonus
-B_SRV = server_bonus
+FLAGS = -Wall -Wextra -Werror
 
-OB_CLI = $(B_CLI:=.o)
-OB_SRV = $(B_SRV:=.o)
+INC = minitalk.h
 
-SRV_C = $(SRV:=.c)
-CLI_C = $(CLI:=.c)
+CSRC = client.c
+CSRC_OBJ = ${CSRC:.c=.o}
 
-SRV_O    = $(SRV:=.o)
-CLI_O = $(CLI:=.o)
+SSRC = server.c
+SSRC_OBJ = ${SSRC:.c=.o}
 
-LIB = ft_printf/libftprintf.a
-LIBDIR    = ft_printf
+CNAME = client
+CBNAME = client_bonus
+SNAME = server
+SBNAME = server_bonus
 
-HEADER = minitalk.h
+BNSSERVER = server_bonus.c
+SBNUS_OBJ = ${BNSSERVER:.c=.o}
+BNSCLIENT = client_bonus.c
+CBNUS_OBJ = ${BNSCLIENT:.c=.o}
 
-all: $(LIB) $(SRV) $(CLI)
 
-$(SRV): $(SRV_O) $(HEADER)
-	@ cc $(FLAGS) -I $(HEADER) $(LIB) $(SRV_O) -o $@
+all: $(CNAME) $(SNAME) 
 
-$(CLI): $(CLI_O) $(HEADER)
-	@ cc $(FLAGS) -I $(HEADER) $(LIB) $(CLI_O) -o $@
-
-bonus: all $(OB_CLI) $(OB_SRV)
-	@$(AR) $(HEADER) $(OB_CLI) $(OB_SRV)
-	
-%.o: %.c
-	@ cc $(FLAGS) -c $< -o $@
-
-$(LIB):
-	@ $(MAKE) -C $(LIBDIR)
+$(CNAME): $(CSRC_OBJ) $(INC)
+	@$(CC) $(FLAGS) $(CSRC_OBJ) -o $(CNAME)
+$(SNAME): $(SSRC_OBJ) $(INC)
+	@$(CC) $(FLAGS) $(SSRC_OBJ) -o $(SNAME)
 
 clean:
-	@ $(MAKE) clean -C $(LIBDIR)
-	@ rm -rf $(SRV_O) $(CLI_O)
+	@rm -rf $(SSRC_OBJ) $(CSRC_OBJ) $(CBNUS_OBJ) $(SBNUS_OBJ)
 
 fclean: clean
-	@ $(MAKE) fclean -C $(LIBDIR)
-	@ rm -rf $(SRV) $(CLI)
+	@rm -rf $(CNAME) $(SNAME) $(CBNAME)  $(SBNAME)
+
+bonus: $(CBNUS_OBJ) $(SBNUS_OBJ)
+	@$(CC) $(FLAGS) $(CBNUS_OBJ) -o $(CBNAME)
+	@$(CC) $(FLAGS) $(SBNUS_OBJ) -o $(SBNAME)
 
 re: fclean all
