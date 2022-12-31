@@ -6,7 +6,7 @@
 /*   By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 15:02:43 by khbouych          #+#    #+#             */
-/*   Updated: 2022/12/30 20:59:57 by khbouych         ###   ########.fr       */
+/*   Updated: 2022/12/31 17:45:28 by khbouych         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,15 @@ void	ft_putnbr(int nb)
 void	ft_putstr_fd(char *str, int fd)
 {
 	if (str)
-		while (*str)      
+		while (*str)
 			write(fd, str++, 1);
 }
 
-void	signal_reciver(int sig, siginfo_t *sa, void *unused)
+void	signal_reciver(int sig, siginfo_t *sa)
 {
 	static int	bit;
 	static char	c;
-	static int	pid_client = 0;
 
-	unused += 0;
-	if (sa->si_pid != pid_client)
-	{
-		bit = 0;
-		c = 0;
-		pid_client = sa->si_pid;
-	}
 	c = c << 1 | (sig - 30);
 	if (++bit < 8)
 		return ;
@@ -52,13 +44,13 @@ void	signal_reciver(int sig, siginfo_t *sa, void *unused)
 int	main(void)
 {
 	struct sigaction	sa;
-
-	sa.sa_sigaction = &signal_reciver;
-	sa.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	
 	ft_putnbr(getpid());
 	write(1, "\n", 1);
+	sa.sa_sigaction = (void*)signal_reciver;
+	sa.sa_flags = 0;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 		pause();
 }

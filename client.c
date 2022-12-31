@@ -6,7 +6,7 @@
 /*   By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:19:24 by khbouych          #+#    #+#             */
-/*   Updated: 2022/12/30 20:45:52 by khbouych         ###   ########.fr       */
+/*   Updated: 2022/12/31 12:29:07 by khbouych         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_atoi(const char *str)
 	sign = 1;
 	i = 0;
 	nb = 0;
-	while ((str[i] >= '\t' && str[i] <= '\r') || str[i] == ' ')    
+	while ((str[i] >= '\t' && str[i] <= '\r') || str[i] == ' ')
 		i++;
 	if (str[i] == '-')
 	{
