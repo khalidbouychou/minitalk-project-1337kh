@@ -6,73 +6,68 @@
 /*   By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:19:24 by khbouych          #+#    #+#             */
-/*   Updated: 2022/12/31 12:29:07 by khbouych         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:25:54 by khbouych         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int	ft_atoi(const char *str)
+void	ft_error(void)
 {
-	int	i;
-	int	nb;
-	int	sign;
-
-	sign = 1;
-	i = 0;
-	nb = 0;
-	while ((str[i] >= '\t' && str[i] <= '\r') || str[i] == ' ')
-		i++;
-	if (str[i] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-	else if (str[i] == '+')
-		i++;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		nb = (str[i] - '0') + (nb * 10);
-		i++;
-	}
-	return (nb * sign);
+	write(2, " \tError!❌\n", 14);
+	exit(1);
 }
 
-void	signal_recived(int sig)
+void	ft_respond(int sig)
 {
 	if (sig == SIGUSR1)
-		write(1, "\x1b[32m Hda Hdaa Ra Signal Wsal \n", 31);
+		write(1, "\t Message recieved!-📧\n", 26);
 }
 
-void	send_bits(int c, int pid)
+void	ft_char_to_bit(char c, int pid)
 {
 	int	i;
-	int	send;
 
 	i = 7;
-	while (i > -1)
+	while (i >= 0)
 	{
-		send = c >> i-- & 1;
-		if (send)
+		if (c >> i & 1)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		usleep(500);
+		usleep(600);
+		i--;
 	}
 }
 
-int	main(int ac, char **av)
+void	ft_transfer_data(char *str, int pid)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		ft_char_to_bit(str[i], pid);
+		i++;
+	}
+	ft_char_to_bit('\0', pid);
+}
+
+int	main(int argc, char *argv[])
 {
 	int	pid;
 
-	signal(SIGUSR1, &signal_recived);
-	if (ac == 3)
+	signal(SIGUSR1, ft_respond);
+	if (argc == 3)
 	{
-		pid = ft_atoi(av[1]);
-		while (*av[2])
-			send_bits(*av[2]++, pid);
-		send_bits(*av[2]++, pid);
+		pid = ft_atoi(argv[1]);
+		if (!pid || !argv[2])
+			ft_error();
+		ft_transfer_data(argv[2], pid);
 	}
 	else
-		write(2, "Error\n\targument error\n", 22);
+	{
+		write(2, "\t Error!❌\n", 13);
+		exit(1);
+	}
 }

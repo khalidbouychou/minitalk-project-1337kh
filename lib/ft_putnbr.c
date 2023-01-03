@@ -1,31 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/17 15:07:51 by khbouych          #+#    #+#             */
-/*   Updated: 2023/01/03 18:24:54 by khbouych         ###   ########.fr       */
+/*   Created: 2023/01/03 12:32:23 by khbouych          #+#    #+#             */
+/*   Updated: 2023/01/03 12:45:08 by khbouych         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "../minitalk.h"
 
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <unistd.h>
-
-typedef struct data
+void	ft_putchar(int c)
 {
-	int		bits;
-	int		s_pid;
-	char	c;
-}			t_data;
-void		ft_putnbr(int n);
-int			ft_atoi(const char *str);
+	write(1, &c, 1);
+}
 
-#endif
+void	ft_putnbr(int n)
+{
+	if (n == -2147483648)
+		write(1, "-2147483648", 12);
+	else if (n < 0)
+	{
+		write(1, "-", 1);
+		ft_putnbr(-n);
+	}
+	else if (n >= 10)
+	{
+		ft_putnbr(n / 10);
+		ft_putchar(n % 10 + 48);
+	}
+	else
+		ft_putchar(n + 48);
+}

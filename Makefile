@@ -6,48 +6,35 @@
 #    By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/07 16:48:04 by khbouych          #+#    #+#              #
-#    Updated: 2022/12/30 21:01:43 by khbouych         ###   ########.fr        #
+#    Updated: 2023/01/03 18:24:12 by khbouych         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = cc
+S_F =	server.c lib/ft_putnbr.c
+C_F = client.c lib/ft_putnbr.c lib/ft_atoi.c
 
-FLAGS = -Wall -Wextra -Werror
+S_OB = $(S_F:.c=.o)
+C_OB = $(C_F:.c=.o)
 
-INC = minitalk.h
+SERVER = server
+CLIENT = client
 
-CSRC = client.c
-CSRC_OBJ = ${CSRC:.c=.o}
+all: $(SERVER) $(CLIENT)
+bonus: $(SERVER) $(CLIENT)
 
-SSRC = server.c
-SSRC_OBJ = ${SSRC:.c=.o}
+$(SERVER): $(S_OB)
+	@cc -Werror -Wextra -Wall $(S_OB) -o $(SERVER)
 
-CNAME = client
-CBNAME = client_bonus
-SNAME = server
-SBNAME = server_bonus
+$(CLIENT) : $(C_OB)
+	@cc -Werror -Wextra -Wall $(C_OB) -o $(CLIENT)
 
-BNSSERVER = server_bonus.c
-SBNUS_OBJ = ${BNSSERVER:.c=.o}
-BNSCLIENT = client_bonus.c
-CBNUS_OBJ = ${BNSCLIENT:.c=.o}
-
-
-all: $(CNAME) $(SNAME) 
-
-$(CNAME): $(CSRC_OBJ) $(INC)
-	@$(CC) $(FLAGS) $(CSRC_OBJ) -o $(CNAME)
-$(SNAME): $(SSRC_OBJ) $(INC)
-	@$(CC) $(FLAGS) $(SSRC_OBJ) -o $(SNAME)
+%.o:%.c minitalk.h
+	cc -Werror -Wextra -Wall -c $< -o $@
 
 clean:
-	@rm -rf $(SSRC_OBJ) $(CSRC_OBJ) $(CBNUS_OBJ) $(SBNUS_OBJ)
+	@rm -f  $(S_OB) $(C_OB)
 
 fclean: clean
-	@rm -rf $(CNAME) $(SNAME) $(CBNAME)  $(SBNAME)
+	@rm -f  $(SERVER) $(CLIENT)
 
-bonus: $(CBNUS_OBJ) $(SBNUS_OBJ)
-	@$(CC) $(FLAGS) $(CBNUS_OBJ) -o $(CBNAME)
-	@$(CC) $(FLAGS) $(SBNUS_OBJ) -o $(SBNAME)
-
-re: fclean all
+re: fclean all clean
