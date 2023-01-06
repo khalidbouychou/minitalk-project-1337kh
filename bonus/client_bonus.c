@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:19:24 by khbouych          #+#    #+#             */
-/*   Updated: 2023/01/03 18:25:54 by khbouych         ###   ########.fr       */
+/*   Updated: 2023/01/06 15:25:38 by khbouych         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
-
-void	ft_error(void)
-{
-	write(2, " \tError!❌\n", 14);
-	exit(1);
-}
+#include "minitalk_bonus.h"
 
 void	ft_respond(int sig)
 {
 	if (sig == SIGUSR1)
-		write(1, "\t Message recieved!-📧\n", 26);
+		write(1, "\t Message recieved!\n", 20);
 }
 
 void	ft_char_to_bit(char c, int pid)
@@ -35,7 +29,7 @@ void	ft_char_to_bit(char c, int pid)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		usleep(600);
+		usleep(500);
 		i--;
 	}
 }
@@ -53,6 +47,12 @@ void	ft_transfer_data(char *str, int pid)
 	ft_char_to_bit('\0', pid);
 }
 
+void	ft_handel_error(void)
+{
+	write(2, "\tError!\n", 8);
+	exit(1);
+}
+
 int	main(int argc, char *argv[])
 {
 	int	pid;
@@ -60,14 +60,11 @@ int	main(int argc, char *argv[])
 	signal(SIGUSR1, ft_respond);
 	if (argc == 3)
 	{
-		pid = ft_atoi(argv[1]);
+		pid = ft_atoi_bonus(argv[1]);
 		if (!pid || !argv[2])
-			ft_error();
+			ft_handel_error();
 		ft_transfer_data(argv[2], pid);
 	}
 	else
-	{
-		write(2, "\t Error!❌\n", 13);
-		exit(1);
-	}
+		ft_handel_error();
 }

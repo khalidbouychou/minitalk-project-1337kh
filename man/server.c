@@ -6,7 +6,7 @@
 /*   By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 15:02:43 by khbouych          #+#    #+#             */
-/*   Updated: 2023/01/03 18:11:06 by khbouych         ###   ########.fr       */
+/*   Updated: 2023/01/06 15:26:56 by khbouych         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ int	main(void)
 
 	g_data.bits = 0;
 	g_data.c = 0;
-	write(1, "💳 The PID is: ", 18);
+	write(1, "PID \t: ", 7);
 	ft_putnbr(getpid());
 	write(1, "\n", 1);
 	sgn.sa_sigaction = &signal_handler;
 	sgn.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &sgn, NULL);
 	sigaction(SIGUSR2, &sgn, NULL);
-	while (pause())
-		;
+	while (1)
+		pause();
 }

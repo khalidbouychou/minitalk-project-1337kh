@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atoi_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 12:32:54 by khbouych          #+#    #+#             */
-/*   Updated: 2023/01/03 12:39:25 by khbouych         ###   ########.fr       */
+/*   Updated: 2023/01/06 13:10:26 by khbouych         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minitalk.h"
+#include "../minitalk_bonus.h"
 
 int	ft_isdigit(int c)
 {
@@ -22,7 +22,7 @@ int	ft_isspace(int c)
 	return ((c == 32 || c == 10 || (c >= 9 && c <= 13)));
 }
 
-int	ft_atoi(const char *str)
+int	ft_atoi_bonus(const char *str)
 {
 	long	sum;
 	long	sign;
