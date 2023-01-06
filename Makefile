@@ -6,7 +6,7 @@
 #    By: khbouych <khbouych@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/07 16:48:04 by khbouych          #+#    #+#              #
-#    Updated: 2023/01/06 15:33:25 by khbouych         ###   ########.fr        #
+#    Updated: 2023/01/06 18:44:38 by khbouych         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,10 @@ C_OB = $(C_F:.c=.o)
 SB_OB = $(S_F_B:.c=.o)
 CB_OB = $(C_F_B:.c=.o)
 
-SERVER = output/server
-CLIENT = output/client
-SERVER_BONUS = output/server_bonus
-CLIENT_BONUS = output/client_bonus
+SERVER = server
+CLIENT = client
+SERVER_BONUS = server_bonus
+CLIENT_BONUS = client_bonus
 
 all: $(SERVER) $(CLIENT)
 bonus: $(SERVER_BONUS) $(CLIENT_BONUS)
